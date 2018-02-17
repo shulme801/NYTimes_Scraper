@@ -1,18 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>News Scraper</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<html>
+  <head>
+    <!-- Tab Title -->
+    <title>Paper Scraper</title>
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/current-events-128.png">
+    <!-- View Port Size -- Responsive-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Compiled and minified CSS for Materialize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <!-- Materialize - Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
 
-</head>	
-<body>
-  		<div class="navbar navbar-inverse">
-    		<a class="brand" href="#">News Scraper</a>
- 		</div>
+  <body>
+  
+    <!-- Fixed Nav Bar -->
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper grey darken-3">
+          <a href="/" class="brand-logo"><i class="material-icons">autorenew</i>NYT Scraper</a>
+          <a href="" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="http://www.nytimes.com/" target="_new">NY Times</a></li>
+            <li><a href="https://github.com/shulme801/NYTimes_Scraper" target="_new">Github Repo</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- For Mobile Nav Bar -->
+    <ul class="side-nav darken-3" id="mobile-demo">
+      <li><a href="http://www.nytimes.com/" target="_new">NY Times</a></li>
+      <li><a href="https://github.com/shulme801/NYTimes_Scraper" target="_new">Github Repo</a></li>
+    </ul>
 
 
-			{{{body}}}
+    <!-- Page Content -->
+    <main> 
 
-</body>
+      <!-- Site Info Container -->
+      <div class="container">
+        <ul class="collection with-header">
+          <li class="collection-header grey lighten-2"><h4><b>The NY Times Scraper</b></h4></li>
+          <li class="collection-item">You can use this application to read and comment on NY Times articles</li>
+          <li class="collection-item"><div>Click <i class="material-icons">autorenew</i> in the navbar to re-scrape data.</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">description</i> to view an article.</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">thumbs_up_down</i> to add a comment.</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">chat</i> to read comments.</div></li>
+        </ul>
+      </div>
+
+
+      <!-- Render All Articles -->
+      <div class="container">
+        {{{body}}}
+      </div>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="page-footer grey darken-3">
+      <div class="footer-copyright">
+        <div class="container">
+        © Pilgrim Marine Consultants - Steve Hulme (Code) NYTimes (Content)</a>
+        </div>
+      </div>
+    </footer>
+
+
+
+    <!-- Link in jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <!-- Materialize - Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+    <!-- Custom JavaScript to respond to the buttons -->
+    <script type="text/javascript" src="assets/js/app.js"></script>
+    
+  </body>
+
 </html>
