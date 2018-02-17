@@ -36,9 +36,6 @@ db.once('open', function() {
   console.log('Mongoose connection successful.');
 });
 
-// Now, let's get handlebars going
-
-
 
 // Here are the routes
 
@@ -54,41 +51,41 @@ router.get('/scrape', function(req, res) {
     // Then, we load that response into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
-      // Save an empty result object
-      var result = {};
 
+    // Save an empty result object
+    var result = {};
+    $("article h2").each(function(i, element) { 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
         .children("a")
         .text();
+
       result.link = $(this)
         .children("a")
         .attr("href");
 
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(function(dbArticle) {
-          // View the added result in the console
-          console.log(dbArticle);
-        })
-        .catch(function(err) {
-          // If an error occurred, send it to the client
-          return res.json(err);
-        });
-    });
+      var entry = new Article (result);
+      // Save the entry to MongoDB
+      entry.save(function(err, doc) {
+         // log any errors
+         if (err) {
+           console.log(err);
+          } 
+      });
+    }); //end for each logic
+  }); //end axios.get logic
 
-  }); //end of the axios response logic
   // If we were able to successfully scrape and save, let's display the articles
   res.redirect("/articles");
-}); //end of the /scrape route logic
+
+}); //end scrape route
 
 
 // Display all the articles in the database
-router.get('/articles', function (req, res){
+router.get ('/articles', function (req, res){
 
   // Query MongoDB for all article entries (sort newest to top, assuming Ids increment)
-  Article.find().sort({_id: -1})
+  Article.find().sort({_id: 1})
 
     // But also populate all of the comments associated with the articles.
     .populate('comments')
@@ -101,7 +98,7 @@ router.get('/articles', function (req, res){
       } 
       // or send the doc to the browser as a json object
       else {
-        var expbsObject = {articles: doc}
+        var expbsObject = {articles: doc};
         res.render('index', expbsObject);
       }
     });
