@@ -40,9 +40,8 @@ db.once('open', function() {
 router.get("/", function(req, res) {
   Article.find({}, null, {sort: {created: -1}}, function(err, data) {
     if(data.length === 0) {
-      res.render("no-scrapes-yet", {message: "There's nothing scraped yet. Please click \"NYT Scraper\" for World News."});
-    }
-    else{
+      res.redirect("/scrape");
+    } else{
       res.render("index", {articles: data});
     }
   });
@@ -50,48 +49,54 @@ router.get("/", function(req, res) {
 
 
 router.get("/scrape", function(req, res) {
-  request("https://www.nytimes.com/section/world", function(error, response, html) {
-    console.log("I am in scrape route");
-    var $ = cheerio.load(html);
-    var result = {};
-    $("div.story-body").each(function(i, element) {
 
-      var link = $(element).find("a").attr("href");
-      var title = $(element).find("h2.headline").text().trim();
-      var summary = $(element).find("p.summary").text().trim();
-      var img = $(element).parent().find("figure.media").find("img").attr("src");
-      result.link = link;
-      result.title = title;
-      if (summary) {
-        result.summary = summary;
-      };
+  request("https://www.nytimes.com/section/world", function(error, response, html) {
+
+    const $ = cheerio.load(html);
+    let titlesArray = [];
+    //  Process one story
+    $("div.story-body").each(function(i, element) {
+      let result = {};
+      result.link = $(element).find("a").attr("href");
+      result.title = $(element).find("h2.headline").text().trim();
+      result.summary = $(element).find("p.summary").text().trim();
+      let img = $(element).parent().find("figure.media").find("img").attr("src");
       if (img) {
         result.img = img;
       }
-      else {
-        result.img = $(element).find(".wide-thumb").find("img").attr("src");
-      };
-      var entry = new Article(result);
-      Article.find({title: entry.title}, function(err, data) {
-        if (data.length === 0) {
-          entry.save(function(err, data) {
-            if (err) throw err;
-          });
-        }
-      });
-    });
-    console.log("Scrape finished.");
-    res.redirect("/articles");
-  });
-  
-});
+      let newArt = new Article(result);
+      if (titlesArray.indexOf(result.title) === -1) {
+        //not a dupe of another article in the current scrape
+        titlesArray.push(result.title); // so save this title into titlesArray in case the article appears again in this scrape
+        // Now, make sure that this article hasn't previously been saved into the DB
+        Article.count({ title: result.title}, function (err,dupeCheck){
+          if (dupeCheck === 0) {
+            // the article is not already in the DB
+            let entry = new Article(result); // so use Article model to create a new article document
+            entry.save(function(err,doc){
+              if (err) {
+                console.log(err);
+              } else {
+                
+              }
+            });
+          } else {
+            
+          } 
+        });//end of the database duplicate check logic
+      } else {
+       
+      }
+    }); // End of "Process one story" logic
+  }, res.redirect("/articles")); // End of the request New York Times World News Page logic
+}); // End of the "get /" route
 
 
-// Display all the articles in the database
+
+// A Route to Display all the articles in the database
 router.get ('/articles', function (req, res){
-  console.log("I am in articles route");
-
-  // Query MongoDB for all article entries (sort newest to top, assuming Ids increment)
+ 
+  // Query MongoDB for all article entries... the sort on -1 outputs the newest first
   Article.find().sort({_id: -1})
 
     // But also populate all of the comments associated with the articles.
@@ -103,9 +108,8 @@ router.get ('/articles', function (req, res){
       if (err){
         console.log(err);
       } 
-      // or send the doc to the browser as a json object
+      // or send the doc to the browser 
       else {
-        console.log("Rendering doc");
         var expbsObject = {articles: doc};
         res.render('index', expbsObject);
       }
