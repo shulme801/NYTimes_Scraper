@@ -117,6 +117,54 @@ router.get ('/articles', function (req, res){
 
 });
 
+// Post route for adding comments to the db using the note model
+router.post('/add/comment/:id', function (req, res){
+
+  // Collect article id
+  var articleId = req.params.id; //This is the index value of the associated article
+  
+  // Collect Author Name
+  var noteAuthor = req.body.name;
+
+  // Collect Comment Content
+  var noteContent = req.body.comment;
+
+  // Build your author/comment-text object
+  var result = {
+    author: noteAuthor,
+    commentBody: noteContent
+  };
+
+  // Using the Comment model, create a new comment entry
+  var entry = new Note (result);
+
+  // Save the entry to the database
+  entry.save(function(err, doc) {
+    // log any errors
+    if (err) {
+      console.log(err);
+    } 
+    // Or, relate the comment to the article
+    else {
+      // Push the new Comment to the list of comments in the article
+      Article.findOneAndUpdate({'_id': articleId}, {$push: {'note':doc._id}}, {new: true})
+      // execute the above query
+      .exec(function(err, doc){
+        // log any errors
+        if (err){
+          console.log(err);
+        } else {
+          //Successfully added the comment to the notes collection and we also pushed the comment's ID to the
+          //doc in the articles collection.
+          res.redirect("/articles");
+        }
+      });
+    }
+  });
+
+});
+
+
 
 // Export Router to Server.js
 module.exports = router;
