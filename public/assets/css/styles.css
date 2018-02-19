@@ -11,3 +11,13 @@ body {
 main {
   flex: 1 0 auto;
 }
+.message {
+	width: 100%;
+	border-radius: 5px;
+	box-shadow: 0 0 10px #aaa;
+	margin: auto;
+	text-align: center;
+	padding: 40px 90px;
+	color: #aaa;
+	background-color: #fff;
+}

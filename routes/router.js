@@ -12,9 +12,7 @@ var Article = require("../models/article.js");
 
 // scraping tools
 var cheerio = require("cheerio");
-// Axios is a promised-based http library, similar to jQuery's Ajax method
-// It works on the client and on the server
-var axios = require("axios");
+var request = require("request");
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadLines";
@@ -40,21 +38,24 @@ db.once('open', function() {
 // Here are the routes
 
 router.get("/", function(req, res) {
-  // First, scrape the articles
-  res.redirect("/scrape");
+  Article.find({}, null, {sort: {created: -1}}, function(err, data) {
+    if(data.length === 0) {
+      res.render("no-scrapes-yet", {message: "There's nothing scraped yet. Please click \"NYT Scraper\" for World News."});
+    }
+    else{
+      res.render("index", {articles: data});
+    }
+  });
 });
 
 
-// A GET route for scraping the New York Times website
-router.get('/scrape', function(req, res) {
-  axios.get("http://www.nytimes.com/").then(function(response) {
-    // Then, we load that response into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(response.data);
-    // Now, we grab every h2 within an article tag, and do the following:
-
-    // Save an empty result object
+router.get("/scrape", function(req, res) {
+  request("https://www.nytimes.com/section/world", function(error, response, html) {
+    console.log("I am in scrape route");
+    var $ = cheerio.load(html);
     var result = {};
-    $("div.story-body").each(function(i, element) { 
+    $("div.story-body").each(function(i, element) {
+
       var link = $(element).find("a").attr("href");
       var title = $(element).find("h2.headline").text().trim();
       var summary = $(element).find("p.summary").text().trim();
@@ -71,27 +72,27 @@ router.get('/scrape', function(req, res) {
         result.img = $(element).find(".wide-thumb").find("img").attr("src");
       };
       var entry = new Article(result);
-      Article.find({title: result.title}, function(err, data) {
+      Article.find({title: entry.title}, function(err, data) {
         if (data.length === 0) {
           entry.save(function(err, data) {
             if (err) throw err;
           });
         }
       });
-    }); //end for each logic
-  }); //end axios.get logic
-
-  // If we were able to successfully scrape and save, let's display the articles
-  res.redirect("/articles");
-
-}); //end scrape route
+    });
+    console.log("Scrape finished.");
+    res.redirect("/articles");
+  });
+  
+});
 
 
 // Display all the articles in the database
 router.get ('/articles', function (req, res){
+  console.log("I am in articles route");
 
   // Query MongoDB for all article entries (sort newest to top, assuming Ids increment)
-  Article.find().sort({_id: 1})
+  Article.find().sort({_id: -1})
 
     // But also populate all of the comments associated with the articles.
     .populate('comments')
@@ -104,6 +105,7 @@ router.get ('/articles', function (req, res){
       } 
       // or send the doc to the browser as a json object
       else {
+        console.log("Rendering doc");
         var expbsObject = {articles: doc};
         res.render('index', expbsObject);
       }
