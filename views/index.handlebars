@@ -25,7 +25,7 @@
 
     <!-- Add Comments Drop Down -->
     <li>
-      <div class="collapsible-header"><i class="material-icons">comment</i>Add a Comment</div>
+      <div class="collapsible-header"><i class="material-icons">thumbs_up_down</i>Add a Comment</div>
       <div class="collapsible-body" style="background-color: white;">
 
         <form id="form-add-{{_id}}" action="add/comment/{{_id}}" method="post" style="background-color: white;">
@@ -64,15 +64,15 @@
 
     <!-- View Comments Drop Down -->
     <li>
-      <div class="collapsible-header"><i class="material-icons">thumbs_up_down</i>View Comments</div>
+      <div class="collapsible-header"><i class="material-icons">comment</i>View Comments</div>
       <div class="collapsible-body" style="background-color: white;">
       
         {{!-- Check if the article has comments --}}
-        {{#if comments}}
+        {{#if note}}
 
           {{!-- Article has comments so iterate over them  --}}
           <ul class="collection">
-            {{#each comments}}
+            {{#each note}}
             
               <li class="collection-item">
 
@@ -89,7 +89,7 @@
                 <br>
 
                 {{!-- Add the Content of the Comment --}}
-                {{content}}
+                {{commentBody}}
 
               </li> 
             {{/each}}
@@ -97,7 +97,7 @@
         
         {{!-- No comments, so display message --}}
         {{else}}
-          <p>No Comments Yet :( </p>
+          <p><i class="material-icons">not_interested</i>No Comments Yet  </p>
         {{/if}}
             
         

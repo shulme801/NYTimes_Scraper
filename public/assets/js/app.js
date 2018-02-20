@@ -5,8 +5,8 @@ $(document).ready(function(){
 
   // Here we add a comment when the add comment button is clicked
   $('.add-comment-button').on('click', function(){
-
-    // Get _id of comment to be deleted
+    console.log("In add comment handler");
+    // Get _id of article whose comments we are adding to
     var articleId = $(this).data("id");
 
     // get the baseURL for either local host or  Heroku
@@ -17,7 +17,7 @@ $(document).ready(function(){
     var frm = $('#' + frmName);
 
 
-    // use AJAX call to delete the comment
+    // use AJAX call to add the comment
     $.ajax({
       url: baseURL + '/add/comment/' + articleId,
       type: 'POST',

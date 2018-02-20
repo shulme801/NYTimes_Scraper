@@ -37,17 +37,21 @@ db.once('open', function() {
 
 // Here are the routes
 
+// The root display route
 router.get("/", function(req, res) {
   Article.find({}, null, {sort: {created: -1}}, function(err, data) {
     if(data.length === 0) {
+      // First time to the / page, so redirect to /scrape to add some articles into the database
       res.redirect("/scrape");
     } else{
+      // Display the articles that are currently in the database
       res.render("index", {articles: data});
     }
   });
 });
 
 
+// The route to scrape the NY Times page
 router.get("/scrape", function(req, res) {
 
   request("https://www.nytimes.com/section/world", function(error, response, html) {
@@ -100,7 +104,7 @@ router.get ('/articles', function (req, res){
   Article.find().sort({_id: -1})
 
     // But also populate all of the comments associated with the articles.
-    .populate('comments')
+    .populate('notes')
 
     // Then, send them to the handlebars template to be rendered
     .exec(function(err, doc){
@@ -110,10 +114,23 @@ router.get ('/articles', function (req, res){
       } 
       // or send the doc to the browser 
       else {
+        console.log("Here are the articles "+JSON.stringify(doc));
         var expbsObject = {articles: doc};
         res.render('index', expbsObject);
       }
     });
+
+});
+
+// Get route to display all the comments for one article (using the note model)
+router.get('/display/comment/:id',function (req,res){
+  
+  // Collect article id
+  var articleId = req.params.id; //This is the index value of the associated article
+  console.log("In display comments route, articleID is "+articleID);
+
+  console.log("This is the request info "+JSON.stringify(req));
+  res.redirect('/articles');
 
 });
 
@@ -147,7 +164,7 @@ router.post('/add/comment/:id', function (req, res){
     // Or, relate the comment to the article
     else {
       // Push the new Comment to the list of comments in the article
-      Article.findOneAndUpdate({'_id': articleId}, {$push: {'note':doc._id}}, {new: true})
+      Article.findOneAndUpdate({'_id': articleId}, {$push: {'notes':doc._id}}, {new: true})
       // execute the above query
       .exec(function(err, doc){
         // log any errors
