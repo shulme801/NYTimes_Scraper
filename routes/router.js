@@ -115,7 +115,6 @@ router.get ('/articles', function (req, res){
       } 
       // or send the doc to the browser 
       else {
-        console.log("Here are the articles "+JSON.stringify(doc));
         var expbsObject = {articles: doc};
         res.render('index', expbsObject);
       }
@@ -128,9 +127,6 @@ router.get('/display/comment/:id',function (req,res){
   
   // Collect article id
   var articleId = req.params.id; //This is the index value of the associated article
-  console.log("In display comments route, articleID is "+articleID);
-
-  console.log("This is the request info "+JSON.stringify(req));
   res.redirect('/articles');
 
 });
@@ -178,6 +174,26 @@ router.post('/add/comment/:id', function (req, res){
         }
       });
     }
+  });
+
+});
+
+// Delete a Comment Route
+router.post('/remove/comment/:id', function (req, res){
+
+  // Collect comment id
+  var noteId = req.params.id;
+
+  // Find and Delete the Comment using the Id
+  Note.findByIdAndRemove(noteId, function (err, todo) {  
+    
+    if (err) {
+      console.log(err);
+    } 
+    else {
+      res.redirect("/articles");
+    }
+
   });
 
 });

@@ -6,7 +6,7 @@
 
     <!-- Article Drop Down -->
     <li>
-      <div style="background-color: white;" class="collapsible-header grey lighten-2">
+      <div  class="collapsible-header brown lighten-5">
         <i class="material-icons">library_books</i> <b>{{updated}}</b>
         <div style="clear: left; line-height: 110%; padding-bottom: 10px;"><b>{{title}}</b></div>
       </div>
@@ -68,11 +68,11 @@
       <div class="collapsible-body" style="background-color: white;">
       
         {{!-- Check if the article has comments --}}
-        {{#if note}}
+        {{#if notes}}
 
           {{!-- Article has comments so iterate over them  --}}
           <ul class="collection">
-            {{#each note}}
+            {{#each notes}}
             
               <li class="collection-item">
 
@@ -82,7 +82,7 @@
                 {{!-- Add a Delete Button --}}
                 <span class="badge">
                   <form id="form-delete-{{_id}}" action="remove/comment/{{_id}}" method="post">
-                    <input class="btn-small delete-comment-button" data-id="{{_id}}" type="submit" value="Delete" style="color: white; background-color: red; border-color: red;">
+                    <input class="btn-small white-text deep-orange darken-5 delete-comment-button" data-id="{{_id}}" type="submit" value="Delete">
                   </form>
                 </span>
 

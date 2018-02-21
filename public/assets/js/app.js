@@ -36,7 +36,7 @@ $(document).ready(function(){
 
   // this is the click listener to delete a comment
   $('.delete-comment-button').on('click', function(){
-
+    console.log("in delete comment logic");
     // Get the id of comment to be deleted
     var commentId = $(this).data("id");
 
