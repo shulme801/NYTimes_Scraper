@@ -75,7 +75,8 @@ router.get("/scrape", function(req, res) {
         // Now, make sure that this article hasn't previously been saved into the DB
         Article.count({ title: result.title}, function (err,dupeCheck){
           if (dupeCheck === 0) {
-            // the article is not already in the DB
+            // the article is not already in the DB because the dupeCheck in the callback had a value of 0 -- 
+            // no articles matched.
             let entry = new Article(result); // so use Article model to create a new article document
             entry.save(function(err,doc){
               if (err) {
