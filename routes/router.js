@@ -1,7 +1,6 @@
 // Dependencies
 var express    = require("express");
 var bodyParser = require("body-parser");
-var logger     = require("morgan");
 var mongoose   = require("mongoose");
 var router     = express.Router();
 var exphbs     = require('express-handlebars');
@@ -200,5 +199,5 @@ router.post('/remove/comment/:id', function (req, res){
 
 
 
-// Export Router to Server.js
+// Export Router 
 module.exports = router;

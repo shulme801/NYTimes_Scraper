@@ -23,8 +23,8 @@ app.use(express.static(process.cwd() + '/public'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-// Import Routes
-var router = require('./routes/router.js');
+// Tell server to use the middleware router.js in the "routes" directory to handle all requests
+var router = require('./routes');
 app.use('/', router);
 
 // Now, start the server
