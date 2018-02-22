@@ -46,15 +46,32 @@
       <div class="container">
         <ul class="collection with-header">
           <li class="collection-header brown lighten-5"><h4><b>The New York Times Scraper</b></h4></li>
-          <li class="collection-item">You can use this application to read, comment and add notes to NY Times articles</li>
-          <li class="collection-item"><div>Click <i class="material-icons">cached</i> in the navbar to scrape/rescrape data</div></li>
-          <li class="collection-item"><div>Click <i class="material-icons">library_books</i> to view an article.</div></li>
-          <li class="collection-item"><div>Click <i class="material-icons">thumbs_up_down</i> to add a comment.</div></li>
-          <li class="collection-item"><div>Click <i class="material-icons">chat</i> to read comments.</div></li>
         </ul>
+        <ul class="collapsible" data-collapsible="accordion">
+          <li>
+              <div class="collapsible-header brown lighten-5">You can use this application to read, comment and add notes to NY Times articles. Click <a href="#">here</a> for instructions
+              </div>
+              <div class="collapsible-body white">
+                <ul>
+                <li class="instructions">Click <i class="material-icons">cached</i> in the navbar to scrape/rescrape data
+                </li>
+                <li class="instructions">Click <i class="material-icons">library_books</i> to view an article.
+                </li>
+                <li class="instructions">Click <i class="material-icons">thumbs_up_down</i> to add a comment.
+                </li>
+                <li class="instructions">Click <i class="material-icons">chat</i> to read or delete comments.
+                </li>
+              </ul>
+              </div>
+          </li>
+        </ul>
+
       </div>
 
-
+         {{!--  <li class="collection-item"><div>Click <i class="material-icons">cached</i> in the navbar to scrape/rescrape data</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">library_books</i> to view an article.</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">thumbs_up_down</i> to add a comment.</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">chat</i> to read comments.</div></li> --}}
       <!-- Render All Articles -->
       <div class="container">
         {{{body}}}
