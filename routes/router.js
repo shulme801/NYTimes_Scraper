@@ -44,7 +44,7 @@ router.get("/", function(req, res) {
       res.redirect("/scrape");
     } else{
       // Display the articles that are currently in the database
-      res.render("index", {articles: data});
+      res.redirect("/articles")
     }
   });
 });
