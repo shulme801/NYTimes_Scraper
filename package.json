@@ -1,5 +1,5 @@
 {
-  "name": "newscraper",
+  "name": "NYTimes_Scraper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/michaelashe/NewsScraper.git"
+    "url": "git+https://github.com/shulme801/NYTimes_Scraper.git"
   },
   "author": "Michael Ashe",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/michaelashe/NewsScraper/issues"
+    "url": "https://github.com/shulme801/NYTimes_Scraper/issues"
   },
-  "homepage": "https://github.com/michaelashe/NewsScraper#readme",
+  "homepage": "https://github.com/shulme801/NYTimes_Scraper#README.md",
   "dependencies": {
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
