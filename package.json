@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/shulme801/NYTimes_Scraper.git"
   },
-  "author": "Michael Ashe",
+  "author": "Steve Hulme",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/shulme801/NYTimes_Scraper/issues"
